@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     # 3rd
     'bootstrap3',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
