@@ -112,7 +112,7 @@
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
               <li><a href="{% if request.user.is_superuser %}/admin/{% endif %}" class="navbar-link">{{ request.user.get_full_name }}</a></li>
-              <li><a href="/accounts/logout/">Logout</a></li>
+              <li><a href="{% url 'accounts:logout' %}">Sign out</a></li>
             {% else %}
               <li><a href="{% url 'accounts:login' %}">Sign in</a></li>
             {% endif %}
