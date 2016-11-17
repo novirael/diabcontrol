@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
 
-{% block body %}
+{% block content %}
   <form action="{% url 'accounts:register' %}" method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form %}
