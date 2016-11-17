@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # DiabControl
+    'rest_api',
     'accounts',
 
     # 3rd
