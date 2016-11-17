@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # DiabControl
     'rest_api',
     'accounts',
+    'patients',
 
     # 3rd
     'bootstrap3',

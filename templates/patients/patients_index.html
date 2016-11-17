@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="page-header">My patients</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for my in object_list %}
+                <tr>
+                    <td>{{ my.patient.email }}</td>
+                    <td>{{ my.patient.first_name }}</td>
+                    <td>{{ my.patient.last_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
