@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_api',
     'accounts',
     'patients',
+    'reports',
 
     # 3rd
     'bootstrap3',
