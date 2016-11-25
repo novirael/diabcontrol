@@ -12,4 +12,4 @@ class Invitation(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='patient_invitations'
     )
-    is_accepted = models.BooleanField(default=None)
+    is_accepted = models.BooleanField(default=False)

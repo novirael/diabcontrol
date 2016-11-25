@@ -2,4 +2,9 @@ from django.contrib import admin
 
 from invitations.models import Invitation
 
-admin.site.register(Invitation)
+
+class InvitationAdmin(admin.ModelAdmin):
+    list_display = ('timestamp', 'doctor', 'patient', 'is_accepted')
+
+
+admin.site.register(Invitation, InvitationAdmin)

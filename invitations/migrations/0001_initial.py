@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('timestamp', models.DateTimeField(auto_now=True)),
-                ('is_accepted', models.BooleanField(default=None)),
+                ('is_accepted', models.BooleanField(default=False)),
                 ('doctor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='doctor_invitations', to=settings.AUTH_USER_MODEL)),
                 ('patient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='patient_invitations', to=settings.AUTH_USER_MODEL)),
             ],

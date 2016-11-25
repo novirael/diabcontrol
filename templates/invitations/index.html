@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block content %}
+    <h1 class="page-header">My invitations</h1>
+    {% if is_doctor %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Patient</th>
+                <th>Is accepted</th>
+                <th>Accept</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invitation in object_list %}
+                {% if invitation.doctor == request.user %}
+                <tr>
+                    <td>{{ invitation.timestamp }}</td>
+                    <td>{{ invitation.patient.get_full_name }}</td>
+                    <td>{% bootstrap_icon invitation.is_accepted|yesno:'ok-sign,question-sign' %}</td>
+                    <td>
+                        {% if not invitation.is_accepted %}
+                            <form method="post" action="{% url 'invitations:accept' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="invitation" value="{{ invitation.id }}">
+                                <input type="submit" class="btn-link" value="Accept">
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Doctor</th>
+                <th>Is accepted</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invitation in object_list %}
+                {% if invitation.patient == request.user %}
+                <tr>
+                    <td>{{ invitation.timestamp }}</td>
+                    <td>{{ invitation.doctor.get_full_name }}</td>
+                    <td>{{ invitation.is_accepted|yesno }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

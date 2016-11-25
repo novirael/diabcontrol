@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^patients/', include('patients.urls', namespace='patients')),
+    url(r'^invitations/', include('invitations.urls', namespace='invitations')),
     url(r'^api/', include('rest_api.urls', namespace='rest_api')),
 
     url(r'^$', login_required(TemplateView.as_view(template_name='base.html'))),
