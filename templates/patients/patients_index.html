@@ -13,7 +13,11 @@
         <tbody>
             {% for my in object_list %}
                 <tr>
-                    <td>{{ my.patient.email }}</td>
+                    <td>
+                        <a href="{% url 'patients:details' pk=my.patient.id %}">
+                            {{ my.patient.email }}
+                        </a>
+                    </td>
                     <td>{{ my.patient.first_name }}</td>
                     <td>{{ my.patient.last_name }}</td>
                 </tr>

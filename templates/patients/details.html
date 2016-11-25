@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="page-header">Patient card</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Contact details</h3>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" style="margin: inherit;">
+                <dt>Full name</dt>
+                <dd>{{ patient.get_full_name }}</dd>
+                <dt>Email address</dt>
+                <dd>{{ patient.email }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Medical details</h3>
+        </div>
+        <div class="panel-body"></div>
+    </div>
+
+    <div class="list-group">
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">Daily results</h4>
+            <p class="list-group-item-text">You can analyze there daily results</p>
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">Weekly results</h4>
+            <p class="list-group-item-text">You can analyze there weekly results</p>
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">Monthly results</h4>
+            <p class="list-group-item-text">You can analyze there monthly results</p>
+        </a>
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">Yearly results</h4>
+            <p class="list-group-item-text">You can analyze there yearly results</p>
+        </a>
+    </div>
+{% endblock %}
