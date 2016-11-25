@@ -1,9 +1,9 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from patients.views import PatientList, PatientDetails
+from patients.views import PatientIndex, PatientDetails
 
 urlpatterns = [
-    url(r'^$', login_required(PatientList.as_view()), name='list'),
-    url(r'^details/(?P<pk>\d+)/$', login_required(PatientDetails.as_view()), name='details'),
+    url('^index/$', login_required(PatientIndex.as_view()), name='index'),
+    url('^details/(?P<pk>\d+)/$', login_required(PatientDetails.as_view()), name='details'),
 ]

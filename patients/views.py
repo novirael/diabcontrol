@@ -2,15 +2,15 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, TemplateView
 
-from patients.models import MyPatients
+from patients.models import Relationship
 
 
-class PatientList(ListView):
-    model = MyPatients
-    template_name = 'patients/patients_index.html'
+class PatientIndex(ListView):
+    model = Relationship
+    template_name = 'patients/index.html'
 
     def get_queryset(self):
-        queryset = super(PatientList, self).get_queryset()
+        queryset = super(PatientIndex, self).get_queryset()
         return queryset.filter(doctor=self.request.user)
 
 

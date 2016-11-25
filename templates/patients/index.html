@@ -11,15 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for my in object_list %}
+            {% for rel in object_list %}
                 <tr>
                     <td>
-                        <a href="{% url 'patients:details' pk=my.patient.id %}">
-                            {{ my.patient.email }}
+                        <a href="{% url 'patients:details' pk=rel.patient.id %}">
+                            {{ rel.patient.email }}
                         </a>
                     </td>
-                    <td>{{ my.patient.first_name }}</td>
-                    <td>{{ my.patient.last_name }}</td>
+                    <td>{{ rel.patient.first_name }}</td>
+                    <td>{{ rel.patient.last_name }}</td>
                 </tr>
             {% endfor %}
         </tbody>

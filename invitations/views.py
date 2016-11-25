@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, ListView
 
 from invitations.models import Invitation
+from patients.models import Relationship
 
 
 class InvitationIndex(ListView):
@@ -54,4 +55,8 @@ class AcceptFormView(FormView):
         )
         invitation.is_accepted = True
         invitation.save()
+        Relationship.objects.create(
+            doctor=invitation.doctor,
+            patient=invitation.patient
+        )
         return super(AcceptFormView, self).form_valid(form)
