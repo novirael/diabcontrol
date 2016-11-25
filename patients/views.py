@@ -32,3 +32,15 @@ class PatientDetails(TemplateView):
         context = super(PatientDetails, self).get_context_data(**kwargs)
         context['patient'] = self.patient
         return context
+
+
+class DailyResultsDetails(TemplateView):
+    template_name = 'patients/results_daily.html'
+
+
+class MonthlyResultsDetails(TemplateView):
+    template_name = 'patients/results_daily.html'
+
+
+class YearlyResultsDetails(TemplateView):
+    template_name = 'patients/results_daily.html'

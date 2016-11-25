@@ -25,19 +25,15 @@
     </div>
 
     <div class="list-group">
-        <a href="#" class="list-group-item">
+        <a href="{% url 'patients:daily_results' pk=patient.pk %}" class="list-group-item">
             <h4 class="list-group-item-heading">Daily results</h4>
             <p class="list-group-item-text">You can analyze there daily results</p>
         </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Weekly results</h4>
-            <p class="list-group-item-text">You can analyze there weekly results</p>
-        </a>
-        <a href="#" class="list-group-item">
+        <a href="{% url 'patients:monthly_results' pk=patient.pk %}" class="list-group-item">
             <h4 class="list-group-item-heading">Monthly results</h4>
             <p class="list-group-item-text">You can analyze there monthly results</p>
         </a>
-        <a href="#" class="list-group-item">
+        <a href="{% url 'patients:yearly_results' pk=patient.pk %}" class="list-group-item">
             <h4 class="list-group-item-heading">Yearly results</h4>
             <p class="list-group-item-text">You can analyze there yearly results</p>
         </a>
