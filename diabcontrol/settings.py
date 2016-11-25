@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'patients',
     'reports',
+    'invitations',
 
     # 3rd
     'bootstrap3',
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'diabcontrol.context_processors.is_doctor',
             ],
         },
     },

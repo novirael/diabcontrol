@@ -124,11 +124,18 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+        {% if request.user.is_authenticated %}
           <ul class="nav nav-sidebar">
-            <li {% if '/dashboard' in request.path %}class="active"{% endif %}><a href="/dashboard/">Dashboard</a></li>
-            <li {% if '/patients' in request.path %}class="active"{% endif %}><a href="/patients/">Patients</a></li>
-            <li {% if '/invitations' in request.path %}class="active"{% endif %}><a href="/invitations/">Invitations</a></li>
+          {% if is_doctor %}
+              <li {% if '/dashboard' in request.path %}class="active"{% endif %}><a href="/dashboard/">Dashboard</a></li>
+              <li {% if '/patients' in request.path %}class="active"{% endif %}><a href="/patients/">My patients</a></li>
+              <li {% if '/invitations/index' in request.path %}class="active"{% endif %}><a href="/invitations/index">My invitations</a></li>
+          {% else %}
+              <li {% if '/invitations/index' in request.path %}class="active"{% endif %}><a href="/invitations/index">My invitations</a></li>
+              <li {% if '/invitations/invite' in request.path %}class="active"{% endif %}><a href="/invitations/invite">Invite a doctor</a></li>
+          {% endif %}
           </ul>
+        {% endif %}
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
