@@ -87,6 +87,13 @@ class AuthenticateUserView(generic.FormView):
 
         return redirect_to
 
+    def get_context_data(self, **kwargs):
+        kwargs['next'] = '{}={}'.format(
+            self.redirect_field_name, self.request.GET.get(REDIRECT_FIELD_NAME)
+        )
+
+        return super(AuthenticateUserView, self).get_context_data(**kwargs)
+
     def form_valid(self, form):
         main_key = UserProfile.objects.get_auth_key(self.request.user)
         auth_key = form.cleaned_data['authenticate_key']

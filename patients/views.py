@@ -24,7 +24,7 @@ class PatientDetails(TemplateView):
         if self.request.session.get('is_authenticated') is not True:
             url = reverse('accounts:authenticate')
 
-            redirect_url = reverse('patients:details', kwargs={'patient_id': kwargs['patient_id']})
+            redirect_url = reverse('patients:details', kwargs={'pk': kwargs['pk']})
 
             full_redirect_url = '{base_url}?{redirect_field_name}={redirect_url}'.format(
                 base_url=url,
