@@ -8,11 +8,13 @@
                 <th>Email</th>
                 <th>First Name</th>
                 <th>Last Name</th>
+              <th>a</th>
             </tr>
         </thead>
         <tbody>
             {% for rel in object_list %}
                 <tr>
+<<<<<<< 7a1410c33165f2003b6f63d8904b5d8d02833160:templates/patients/index.html
                     <td>
                         <a href="{% url 'patients:details' pk=rel.patient.id %}">
                             {{ rel.patient.email }}

@@ -1,6 +1,8 @@
+import pyotp
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.forms.utils import ErrorList
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
 from django.views import generic
@@ -9,7 +11,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import FormView
 
-from accounts.forms import RegisterForm
+from accounts.forms import RegisterForm, AuthenticateForm
+from accounts.models import UserProfile
 
 
 class LoginView(FormView):
@@ -70,3 +73,33 @@ class RegisterView(generic.FormView):
         response = super(RegisterView, self).form_valid(form)
 
         return response
+
+
+class AuthenticateUserView(generic.FormView):
+    form_class = AuthenticateForm
+    template_name = 'accounts/authenticate.html'
+    redirect_field_name = REDIRECT_FIELD_NAME
+
+    def get_success_url(self):
+        redirect_to = self.request.GET.get(self.redirect_field_name)
+        if not is_safe_url(url=redirect_to, host=self.request.get_host()):
+            redirect_to = self.success_url
+
+        return redirect_to
+
+    def form_valid(self, form):
+        main_key = UserProfile.objects.get_auth_key(self.request.user)
+        auth_key = form.cleaned_data['authenticate_key']
+
+        totp = pyotp.TOTP(main_key)
+
+        is_valid = totp.verify(auth_key)
+
+        if is_valid:
+            self.request.session['is_authenticated'] = True
+            return super(AuthenticateUserView, self).form_valid(form)
+
+        form_errors = form._errors.setdefault('authenticate_key', ErrorList())
+        form_errors.append("Invalid autnentication code")
+
+        return super(AuthenticateUserView, self).form_invalid(form)

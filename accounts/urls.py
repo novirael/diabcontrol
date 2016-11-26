@@ -9,5 +9,6 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url('^register/', views.RegisterView.as_view(), name='register'),
     url('^login/', views.LoginView.as_view(), name='login'),
-    url('^logout/', auth_views.logout, name='logout')
+    url('^logout/', auth_views.logout, name='logout'),
+    url('^authenticate/', views.AuthenticateUserView.as_view(), name='authenticate'),
 ]

@@ -1,5 +1,7 @@
+from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 
 from patients.models import Relationship
@@ -19,18 +21,30 @@ class PatientDetails(TemplateView):
     patient = None
 
     def dispatch(self, request, *args, **kwargs):
-        self.patient = get_object_or_404(
+        if self.request.session.get('is_authenticated') is not True:
+            url = reverse('accounts:authenticate')
+
+            redirect_url = reverse('patients:details', kwargs={'patient_id': kwargs['patient_id']})
+
+            full_redirect_url = '{base_url}?{redirect_field_name}={redirect_url}'.format(
+                base_url=url,
+                redirect_field_name=REDIRECT_FIELD_NAME,
+                redirect_url=redirect_url
+            )
+
+            return redirect(full_redirect_url)
+
+        return super(PatientDetails, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        patient = get_object_or_404(
             User,
             pk=self.kwargs['pk'],
             groups__name__exact='Patient',
         )
-        return super(PatientDetails, self).dispatch(
-            request, *args, **kwargs
-        )
 
-    def get_context_data(self, **kwargs):
         context = super(PatientDetails, self).get_context_data(**kwargs)
-        context['patient'] = self.patient
+        context['patient'] = patient
         return context
 
 
