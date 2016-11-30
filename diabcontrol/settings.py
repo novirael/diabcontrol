@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'patients',
     'reports',
     'invitations',
+    'msg',
 
     # 3rd
     'bootstrap3',
