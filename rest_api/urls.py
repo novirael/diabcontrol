@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^auth/', views.obtain_auth_token),
     url(r'^data/', DataView.as_view()),
     url(r'^msg', include('msg.urls_api'), name='msg'),
+    url(r'^patients', include('patients.urls_api'), name='patients'),
 ]
