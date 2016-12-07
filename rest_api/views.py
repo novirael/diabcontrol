@@ -23,3 +23,11 @@ class DataView(APIView):
             return Response(status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AlertView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+
+    def get(self, request):
+        msg = "Twoje wyniki z dnia na dzień są coraz gorsze!"
+        return Response(msg)
