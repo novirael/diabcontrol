@@ -4,7 +4,7 @@ from msg.models import Message
 
 
 class MessagesAdmin(admin.ModelAdmin):
-    list_display = ('doctor', 'patient', 'content', 'datetime')
+    list_display = ('sender', 'receiver', 'content', 'datetime')
 
 
 admin.site.register(Message, MessagesAdmin)

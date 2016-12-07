@@ -20,9 +20,9 @@ class UserMessageSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    doctor = UserMessageSerializer()
-    patient = UserMessageSerializer()
+    sender = UserMessageSerializer()
+    receiver = UserMessageSerializer()
 
     class Meta:
         model = Message
-        fields = ('doctor', 'patient', 'content', 'datetime')
+        fields = ('sender', 'receiver', 'content', 'datetime')
