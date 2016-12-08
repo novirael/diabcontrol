@@ -7,6 +7,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from msg.models import Alert
 from rest_api.serializers import ReportSerializer
 
 
@@ -26,8 +27,10 @@ class DataView(APIView):
 
 
 class AlertView(APIView):
-    authentication_classes = (authentication.TokenAuthentication,)
 
     def get(self, request):
-        msg = "Twoje wyniki z dnia na dzień są coraz gorsze!"
-        return Response(msg)
+        try:
+            alert = Alert.objects.get(user=request.user)
+        except Alert.DoesNotExist:
+            alert = None
+        return Response(alert.content if alert else "")

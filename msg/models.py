@@ -24,3 +24,8 @@ class Message(models.Model):
     datetime = models.DateTimeField(auto_now=True)
 
     objects = MessageManager()
+
+
+class Alert(models.Model):
+    user = models.OneToOneField(User)
+    content = models.TextField()
