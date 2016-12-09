@@ -27,6 +27,24 @@ class ReportDataManager(models.Manager):
         )
 
 
+class GlucoseManager(models.Manager):
+    def get_queryset(self):
+        queryset = super(GlucoseManager, self).get_queryset()
+        return queryset.filter(group='glucose')
+
+
+class PhysicalActivityManager(models.Manager):
+    def get_queryset(self):
+        queryset = super(PhysicalActivityManager, self).get_queryset()
+        return queryset.filter(group='physical_activity')
+
+
+class NutritionManager(models.Manager):
+    def get_queryset(self):
+        queryset = super(NutritionManager, self).get_queryset()
+        return queryset.filter(group='nutrition')
+
+
 class ReportData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     patient = models.ForeignKey(User)
@@ -37,3 +55,7 @@ class ReportData(models.Model):
     value = models.IntegerField()
 
     objects = ReportDataManager()
+    glucose_measurement = GlucoseManager()
+    physical_activity = PhysicalActivityManager()
+    nutrition = NutritionManager()
+
