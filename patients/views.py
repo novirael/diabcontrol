@@ -34,9 +34,10 @@ class PatientDetails(TemplateView):
 
 class DailyResultsDetails(TemplateView):
     template_name = 'patients/results_daily.html'
+    patient = None
 
     def get_context_data(self, **kwargs):
-        patient = get_object_or_404(
+        self.patient = get_object_or_404(
             User,
             pk=self.kwargs['pk'],
             groups__name__exact='Patient',
@@ -53,8 +54,22 @@ class DailyResultsDetails(TemplateView):
 
         context = super(DailyResultsDetails, self).get_context_data(**kwargs)
         context['date'] = current_date
-        context['patient'] = patient
+        context['patient'] = self.patient
+
+        context.update(self.get_activity_context())
+        context.update(self.get_nutrition_context())
+        context.update(self.get_glucose_context())
+
         return context
+
+    def get_activity_context(self):
+        return {}
+
+    def get_nutrition_context(self):
+        return {}
+
+    def get_glucose_context(self):
+        return {}
 
 
 class MonthlyResultsDetails(TemplateView):
