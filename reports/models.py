@@ -46,11 +46,31 @@ class NutritionManager(models.Manager):
 
 
 class ReportData(models.Model):
+    GROUPS = (
+        ('glucose', 'Glucose'),
+        ('physical_activity', 'Physical Activity'),
+        ('nutrition', 'Nutrition'),
+    )
+    TYPES = (
+        # Glucose
+        ('glucose', 'Glucose'),
+
+        # Physical Activity
+        ('flights_climbed', 'Flights Climbed'),
+        ('steps', 'Steps'),
+        ('heart_rate', 'Heart Rate'),
+
+        # Nutrition
+        ('fat', 'Fat'),
+        ('protein', 'Protein'),
+        ('carbohydrates', 'Carbohydrates'),
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     patient = models.ForeignKey(User)
     report = models.ForeignKey(Report, null=True, default=None, related_name='data')
-    type = models.CharField(max_length=255)
-    group = models.CharField(max_length=255, null=True, default=None)
+    type = models.CharField(max_length=255, choices=TYPES)
+    group = models.CharField(max_length=255, null=True, default=None, choices=GROUPS)
     datetime = models.DateTimeField()
     value = models.IntegerField()
 
