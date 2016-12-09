@@ -7,7 +7,7 @@ from django.db import models
 
 
 class Report(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     patient = models.ForeignKey(User)
     date = models.DateField(auto_now=True)
     mood_level = models.IntegerField(default=5)
@@ -28,9 +28,9 @@ class ReportDataManager(models.Manager):
 
 
 class ReportData(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     patient = models.ForeignKey(User)
-    report = models.ForeignKey(Report, null=True, default=None)
+    report = models.ForeignKey(Report, null=True, default=None, related_name='data')
     type = models.CharField(max_length=255)
     group = models.CharField(max_length=255, null=True, default=None)
     datetime = models.DateTimeField()
