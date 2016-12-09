@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="page-header">Daily results</h1>
+    <h1 class="page-header">Daily results <small>{{ date }}</small></h1>
     <nav>
       <ul class="pager">
-        <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
-        <li class="next"><a href="#">Next <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="previous">
+            <a href="{% url 'patients:daily_results' patient.id date.year date.month date.day|add:"-1" %}">
+                <span aria-hidden="true">&larr;</span> Previous</a>
+        </li>
+        <li class="next">
+            <a href="{% url 'patients:daily_results' patient.id date.year date.month date.day|add:"1" %}">Next
+                <span aria-hidden="true">&rarr;</span></a></li>
       </ul>
     </nav>
     <h2>Physical effort</h2>

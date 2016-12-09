@@ -1,4 +1,6 @@
+from datetime import date
 from django.contrib.auth.models import User
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, TemplateView
 
@@ -32,6 +34,27 @@ class PatientDetails(TemplateView):
 
 class DailyResultsDetails(TemplateView):
     template_name = 'patients/results_daily.html'
+
+    def get_context_data(self, **kwargs):
+        patient = get_object_or_404(
+            User,
+            pk=self.kwargs['pk'],
+            groups__name__exact='Patient',
+        )
+
+        try:
+            current_date = date(
+                int(self.kwargs.get('year')),
+                int(self.kwargs.get('month')),
+                int(self.kwargs.get('day')),
+            )
+        except ValueError:
+            raise Http404
+
+        context = super(DailyResultsDetails, self).get_context_data(**kwargs)
+        context['date'] = current_date
+        context['patient'] = patient
+        return context
 
 
 class MonthlyResultsDetails(TemplateView):

@@ -24,8 +24,13 @@
         <div class="panel-body"></div>
     </div>
 
+    {% now "Y" as current_year %}
+    {% now "m" as current_month %}
+    {% now "d" as current_day %}
+
+
     <div class="list-group">
-        <a href="{% url 'patients:daily_results' pk=patient.pk %}" class="list-group-item">
+        <a href="{% url 'patients:daily_results' patient.pk current_year current_month current_day %}" class="list-group-item">
             <h4 class="list-group-item-heading">Daily results</h4>
             <p class="list-group-item-text">You can analyze there daily results</p>
         </a>
