@@ -7,8 +7,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from msg.models import Message
-from msg.serializers import MessageSenderSerializer, MessageSerializer, UserMessageSerializer
+from msg.models import Message, Alert
+from msg.serializers import MessageSenderSerializer, MessageSerializer
 
 
 class MessagesListView(APIView):
@@ -42,3 +42,12 @@ class MessagesNewView(APIView):
             return Response(status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AlertView(APIView):
+    def get(self, request):
+        try:
+            alert = Alert.objects.get(user=request.user)
+        except Alert.DoesNotExist:
+            alert = None
+        return Response(alert.content if alert else "")
