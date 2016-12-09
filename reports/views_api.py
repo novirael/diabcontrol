@@ -25,8 +25,8 @@ class DataView(APIView):
 
             report.save()
 
-            for group, group_data in data_stats.iteritems():
-                for data_type, type_data in group_data.iteritems():
+            for group, group_data in data_stats.items():
+                for data_type, type_data in group_data.items():
                     for data in type_data:
                         ReportData.objects.save_data(
                             self.request.user,
