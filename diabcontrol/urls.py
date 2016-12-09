@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^api/', include('rest_api.urls', namespace='rest_api')),
 
     url(r'^$', login_required(TemplateView.as_view(template_name='base.html'))),
+
+    url('', include('social_django.urls', namespace='social'))
 ]

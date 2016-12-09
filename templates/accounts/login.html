@@ -12,4 +12,8 @@
     {% endbuttons %}
   </form>
   <p>If you don't have an account you can <a href="{% url 'accounts:register' %}">register it there</a>.</p>
+
+  <p>
+  <a href="{% url "social:begin" "google-oauth2" %}">Login with Google</a>
+  </p>
 {% endblock %}
