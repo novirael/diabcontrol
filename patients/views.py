@@ -30,6 +30,7 @@ class PatientDetails(TemplateView):
 
         context = super(PatientDetails, self).get_context_data(**kwargs)
         context['patient'] = patient
+        context['reports'] = patient.report_set.all()
         return context
 
 
