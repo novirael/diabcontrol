@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block content %}
-    <h1 class="page-header">Daily results <small>{{ date }}</small></h1>
+    <h1 class="page-header">Daily results <small>{{ patient.get_full_name }}, {{ date }}</small></h1>
     <nav>
       <ul class="pager">
         <li class="previous">
@@ -16,4 +18,40 @@
     <h2>Physical effort</h2>
     <h2>Diet</h2>
     <h2>Glucose</h2>
+    {% if status == 'danger' or status == 'warning' %}
+        <p class="text-{{ status }} text-uppercase">You should take a look at this!</p>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+              <canvas width="500" height="300" id="dailyGlucoseChart"></canvas>
+
+        </div>
+        <div class="col-md-6">
+            <dl class="dl-horizontal" style="margin: inherit;">
+                <dt>Daily average</dt>
+                <dd>{{ glucose_avg }} mg/dL</dd>
+                <dt>Daily minimum</dt>
+                <dd>{{ glucose_min }} mg/dL</dd>
+                <dt>Daily maximim</dt>
+                <dd>{{ glucose_max }} mg/dL</dd>
+                <dt>State</dt>
+                <dd><p class="text-uppercase text-{{ status }}">{{ status }}</p></dd>
+            </dl>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/glucose/daily/{{ date.year }}/{{ date.month }}/{{ date.day }}/', function(data) {
+            var ctx = $("#dailyGlucoseChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
 {% endblock %}

@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^data/', DataView.as_view()),
     url(r'^alert/', AlertView.as_view()),
     url(r'^msg/', include('msg.urls_api'), name='msg'),
-    url(r'^patients', include('patients.urls_api'), name='patients'),
+    url(r'^patients/', include('patients.urls_api'), name='patients'),
 ]

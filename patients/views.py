@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, TemplateView
 
 from patients.models import Relationship
+from reports.models import ReportData
 
 
 class PatientIndex(ListView):
@@ -32,28 +33,33 @@ class PatientDetails(TemplateView):
         return context
 
 
-class DailyResultsDetails(TemplateView):
-    template_name = 'patients/results_daily.html'
+class PatientDateMixin(object):
     patient = None
+    current_date = None
 
-    def get_context_data(self, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         self.patient = get_object_or_404(
             User,
-            pk=self.kwargs['pk'],
+            pk=kwargs.pop('pk', 0),
             groups__name__exact='Patient',
         )
-
         try:
-            current_date = date(
-                int(self.kwargs.get('year')),
-                int(self.kwargs.get('month')),
-                int(self.kwargs.get('day')),
+            self.current_date = date(
+                int(kwargs.pop('year')),
+                int(kwargs.pop('month')),
+                int(kwargs.pop('day')),
             )
         except ValueError:
             raise Http404
+        return super(PatientDateMixin, self).dispatch(request, *args, **kwargs)
 
+
+class DailyResultsDetails(PatientDateMixin, TemplateView):
+    template_name = 'patients/results_daily.html'
+
+    def get_context_data(self, **kwargs):
         context = super(DailyResultsDetails, self).get_context_data(**kwargs)
-        context['date'] = current_date
+        context['date'] = self.current_date
         context['patient'] = self.patient
 
         context.update(self.get_activity_context())
@@ -69,7 +75,32 @@ class DailyResultsDetails(TemplateView):
         return {}
 
     def get_glucose_context(self):
-        return {}
+        glucose_data = ReportData.glucose_measurement.filter(
+            patient_id=self.patient.id,
+            datetime__day=self.current_date.day,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+        values = [data.value for data in glucose_data]
+        min_glucose, max_glucose, avg_glucose = None, None, None
+
+        if values:
+            min_glucose = min(values)
+            max_glucose = max(values)
+            avg_glucose = sum(values) / len(values)
+
+        status = 'default'
+        if any(filter(lambda x: x < 60 or x > 139, values)):
+            status = 'danger'
+        elif any(filter(lambda x: x < 70 or x > 99, values)):
+            status = 'warning'
+
+        return {
+            'glucose_min': min_glucose,
+            'glucose_max': max_glucose,
+            'glucose_avg': avg_glucose,
+            'status': status
+        }
 
 
 class MonthlyResultsDetails(TemplateView):
