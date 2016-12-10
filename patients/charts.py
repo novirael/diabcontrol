@@ -17,10 +17,11 @@ class DailyGlucoseLevelJSONView(PatientDateMixin, BaseLineChartView):
         return super(DailyGlucoseLevelJSONView, self).get_context_data()
 
     def get_labels(self):
-        return [
+        labels = [
             data.datetime.strftime("%H:%M")
             for data in self.glucose_data
         ]
+        return labels
 
     def get_data(self):
         return [[data.value for data in self.glucose_data]]

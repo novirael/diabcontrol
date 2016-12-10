@@ -79,3 +79,6 @@ class ReportData(models.Model):
     physical_activity = PhysicalActivityManager()
     nutrition = NutritionManager()
 
+    class Meta:
+        ordering = ('datetime',)
+
