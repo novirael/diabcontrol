@@ -15,8 +15,34 @@
                 <span aria-hidden="true">&rarr;</span></a></li>
       </ul>
     </nav>
-    <h2>Physical effort</h2>
+
+    <h2>Physical effort:</h2>
+
+    <div>
+        <dl>
+            <dt >Heart rate average of today:</dt>
+            <dd class="text-uppercase text-{{ hr_status }}">{{ heart_rate }} BPM</dd>
+            <dt>Heart rate average of previous month:</dt>
+            <dd> {{ avg_prev_hr }} BPM</dd>
+            <dt>Steps:</dt>
+            <dd>{{ steps }}</dd>
+            <dt>Flights climbed</dt>
+            <dd>{{ flights_climbed }} Floors</dd>
+        </dl>
+    </div>
+
     <h2>Diet</h2>
+    <div>
+        <dl>
+            <dt>Fat:</dt>
+            <dd>{{ fat }} g</dd>
+            <dt>Protein:</dt>
+            <dd>{{ protein }} g</dd>
+            <dt>Carbohydrates:</dt>
+            <dd>{{ carbohydrates }} g</dd>
+        </dl>
+    </div>
+
     <h2>Glucose</h2>
     {% if status == 'danger' or status == 'warning' %}
         <p class="text-{{ status }} text-uppercase">You should take a look at this!</p>
