@@ -33,7 +33,7 @@ class MainStatsSerializer(serializers.Serializer):
 class ReportSerializer(serializers.Serializer):
     has_headaches = serializers.BooleanField()
     mood_level = serializers.IntegerField(min_value=1, max_value=5)
-    other_diseases = serializers.CharField()
+    other_diseases = serializers.CharField(allow_null=True, allow_blank=True)
 
 
 class MainReportSerializer(serializers.Serializer):
