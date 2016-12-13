@@ -3,7 +3,10 @@
 {% load staticfiles %}
 
 {% block content %}
-    <h1 class="page-header">Daily results <small>{{ patient.get_full_name }}, {{ date }}</small></h1>
+    <div class="page-header">
+        <h1>Daily results <small> {{ date|date:"d F Y" }}</small></h1>
+        <h2>{{ patient.get_full_name }}</h2>
+    </div>
     <nav>
       <ul class="pager">
         <li class="previous">
@@ -16,7 +19,7 @@
       </ul>
     </nav>
 
-    <h2>Physical effort:</h2>
+    <h2>Physical effort</h2>
 
     <div>
         <dl>

@@ -47,15 +47,38 @@ class PatientDateMixin(object):
         try:
             self.current_date = date(
                 int(kwargs.pop('year')),
-                int(kwargs.pop('month')),
-                int(kwargs.pop('day')),
+                int(kwargs.pop('month', 1)),
+                int(kwargs.pop('day', 1)),
             )
         except ValueError:
             raise Http404
         return super(PatientDateMixin, self).dispatch(request, *args, **kwargs)
 
 
-class DailyResultsDetails(PatientDateMixin, TemplateView):
+class ResultsDetails(PatientDateMixin, TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context = super(ResultsDetails, self).get_context_data(**kwargs)
+        context['date'] = self.current_date
+        context['patient'] = self.patient
+
+        context.update(self.get_activity_context())
+        context.update(self.get_nutrition_context())
+        context.update(self.get_glucose_context())
+
+        return context
+
+    def get_activity_context(self):
+        return {}
+
+    def get_nutrition_context(self):
+        return {}
+
+    def get_glucose_context(self):
+        return {}
+
+
+class DailyResultsDetails(ResultsDetails):
     template_name = 'patients/results_daily.html'
 
     def get_context_data(self, **kwargs):
@@ -191,9 +214,9 @@ class DailyResultsDetails(PatientDateMixin, TemplateView):
         }
 
 
-class MonthlyResultsDetails(TemplateView):
-    template_name = 'patients/results_daily.html'
+class MonthlyResultsDetails(ResultsDetails):
+    template_name = 'patients/results_monthly.html'
 
 
-class YearlyResultsDetails(TemplateView):
-    template_name = 'patients/results_daily.html'
+class YearlyResultsDetails(ResultsDetails):
+    template_name = 'patients/results_yearly.html'

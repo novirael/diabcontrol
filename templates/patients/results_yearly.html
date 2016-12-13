@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Yearly results <small> {{ date|date:"Y" }}</small></h1>
+        <h2>{{ patient.get_full_name }}</h2>
+    </div>
+    <nav>
+      <ul class="pager">
+        <li class="previous">
+            <a href="{% url 'patients:yearly_results' patient.id date.year|add:"-1" %}">
+                <span aria-hidden="true">&larr;</span> Previous</a>
+        </li>
+        <li class="next">
+            <a href="{% url 'patients:yearly_results' patient.id date.year|add:"1" %}">Next
+                <span aria-hidden="true">&rarr;</span></a></li>
+      </ul>
+    </nav>
+
+    <h2>Physical effort</h2>
+
+    <h2>Diet</h2>
+
+    <h2>Glucose</h2>
+
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
