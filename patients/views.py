@@ -1,9 +1,12 @@
 from datetime import date, timedelta
 from calendar import monthrange
+
+from django import forms
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, TemplateView, FormView
 
 from msg.models import Message
 from patients.models import Relationship
@@ -19,22 +22,43 @@ class PatientIndex(ListView):
         return queryset.filter(doctor=self.request.user)
 
 
-class PatientDetails(TemplateView):
+class MessageForm(forms.Form):
+    content = forms.Field(required=True)
+
+
+class PatientDetails(FormView):
     template_name = 'patients/details/base.html'
+    form_class = MessageForm
     patient = None
 
-    def get_context_data(self, **kwargs):
-        patient = get_object_or_404(
+    def dispatch(self, request, *args, **kwargs):
+        self.patient = get_object_or_404(
             User,
             pk=self.kwargs['pk'],
             groups__name__exact='Patient',
         )
+        return super(PatientDetails, self).dispatch(request, *args, **kwargs)
 
+    def get_success_url(self):
+        return reverse_lazy(
+            'patients:details',
+            kwargs={'pk': self.patient.id}
+        )
+
+    def form_valid(self, form):
+        Message.objects.create(
+            sender=self.request.user,
+            receiver=self.patient,
+            content=form.data['content'],
+        )
+        return super(PatientDetails, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
         context = super(PatientDetails, self).get_context_data(**kwargs)
-        context['patient'] = patient
-        context['reports'] = patient.report_set.all()
+        context['patient'] = self.patient
+        context['reports'] = self.patient.report_set.all()
         context['messages'] = Message.objects.conversations(
-            self.request.user, patient
+            self.request.user, self.patient
         )
         return context
 

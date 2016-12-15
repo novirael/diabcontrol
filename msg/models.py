@@ -33,6 +33,9 @@ class Message(models.Model):
 
     objects = MessageManager()
 
+    class Meta:
+        ordering = ('datetime',)
+
 
 class Alert(models.Model):
     user = models.OneToOneField(User)
