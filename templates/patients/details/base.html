@@ -44,34 +44,8 @@
         </a>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Reports</h3>
-        </div>
-        <div class="panel-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Mood level</th>
-                        <th>Has headaches</th>
-                        <th>Other issues</th>
-                        <th>Signed</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for report in reports %}
-                <tr>
-                    <td><a href="#">{{ report.date }}</a></td>
-                    <td>{{ report.mood_level }}</td>
-                    <td>{{ report.has_headaches }}</td>
-                    <td>{{ report.other_diseases }}</td>
-                    <td>No</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    {% include "patients/details/reports.html" %}
+    {% include "patients/details/messages.html" %}
+
 {% endblock %}
 

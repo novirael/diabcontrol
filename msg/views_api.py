@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
-from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,15 +12,8 @@ from msg.serializers import MessageSenderSerializer, MessageSerializer
 
 class MessagesListView(APIView):
     def get(self, request, *args, **kwargs):
-        messages = Message.objects.filter(
-            Q(
-                sender=self.request.user,
-                receiver=self.kwargs['user_id'],
-            ) |
-            Q(
-                sender=self.kwargs['user_id'],
-                receiver=self.request.user,
-            )
+        messages = Message.objects.conversations(
+            self.request.user, self.kwargs['user_id']
         )
         serializer = MessageSerializer(messages, many=True)
 

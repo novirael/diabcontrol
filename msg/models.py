@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Q
 
 
 class MessageManager(models.Manager):
@@ -15,6 +16,13 @@ class MessageManager(models.Manager):
         msg.save()
 
         return msg
+
+    def conversations(self, user1, user2):
+        queryset = self.get_queryset()
+        return queryset.filter(
+            Q(sender=user1, receiver=user2) |
+            Q(sender=user2, receiver=user1)
+        )
 
 
 class Message(models.Model):

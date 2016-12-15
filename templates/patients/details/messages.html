@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Conversation</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="media-list">
+            {% for message in messages %}
+            <li class="media">
+                <div class="media-left">
+                    <span class="glyphicon glyphicon-user"></span>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading" title="{{ message.sender }}">
+                        {{ message.sender.get_full_name }} <small>({{ message.datetime }})</small>
+                    </h4>
+                    {{ message.content }}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

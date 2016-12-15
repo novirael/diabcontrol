@@ -5,6 +5,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, TemplateView
 
+from msg.models import Message
 from patients.models import Relationship
 from reports.models import ReportData
 
@@ -19,7 +20,7 @@ class PatientIndex(ListView):
 
 
 class PatientDetails(TemplateView):
-    template_name = 'patients/details.html'
+    template_name = 'patients/details/base.html'
     patient = None
 
     def get_context_data(self, **kwargs):
@@ -32,6 +33,9 @@ class PatientDetails(TemplateView):
         context = super(PatientDetails, self).get_context_data(**kwargs)
         context['patient'] = patient
         context['reports'] = patient.report_set.all()
+        context['messages'] = Message.objects.conversations(
+            self.request.user, patient
+        )
         return context
 
 
