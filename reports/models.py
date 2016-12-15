@@ -4,8 +4,10 @@ from uuid import uuid4
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class Report(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     patient = models.ForeignKey(User)
@@ -13,6 +15,9 @@ class Report(models.Model):
     mood_level = models.IntegerField(default=5)
     has_headaches = models.BooleanField(default=False)
     other_diseases = models.TextField(null=True, default=None)
+
+    def __str__(self):
+        return "{} - {}".format(self.date, self.patient)
 
 
 class ReportDataManager(models.Manager):
