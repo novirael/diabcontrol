@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-{% load staticfiles %}
 
 {% block content %}
     <div class="page-header">
@@ -54,7 +53,6 @@
     <div class="row">
         <div class="col-md-6">
               <canvas width="500" height="300" id="dailyGlucoseChart"></canvas>
-
         </div>
         <div class="col-md-6">
             <dl class="dl-horizontal" style="margin: inherit;">
@@ -68,15 +66,12 @@
                 <dd><p class="text-uppercase text-{{ status }}">{{ status }}</p></dd>
             </dl>
         </div>
-
     </div>
 
 {% endblock %}
 
 
 {% block scripts %}
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
     <script type="text/javascript">
         $.get('/api/patients/{{ patient.pk }}/charts/glucose/daily/{{ date.year }}/{{ date.month }}/{{ date.day }}/', function(data) {
             var ctx = $("#dailyGlucoseChart").get(0).getContext("2d");

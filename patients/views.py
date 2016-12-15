@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from calendar import monthrange
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -214,9 +215,73 @@ class DailyResultsDetails(ResultsDetails):
         }
 
 
-class MonthlyResultsDetails(ResultsDetails):
+class SummaryResultsDetails(ResultsDetails):
+
+    def get_start_end_chunk(self):
+        raise NotImplementedError()
+
+    @property
+    def glucose_data(self):
+        raise NotImplementedError()
+
+    def get_glucose_context(self):
+        chunks = [
+            [
+                data.value
+                for data in self.glucose_data
+                if data.datetime.day == day
+            ]
+            for day in range(*self.get_start_end_chunk())
+        ]
+        chunks = [chunk for chunk in chunks if chunk]
+
+        context = {}
+        if not any(chunks):
+            return context
+
+        values = [data.value for data in self.glucose_data]
+        context['values_per_day'] = dict(
+            min=min(values),
+            max=max(values),
+        )
+
+        values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        context['values_per_month'] = dict(
+            min=min(values_avg),
+            max=max(values_avg),
+            avg=sum(values_avg) / (len(values_avg) or 1),
+        )
+
+        return context
+
+
+class MonthlyResultsDetails(SummaryResultsDetails):
     template_name = 'patients/results_monthly.html'
 
+    def get_start_end_chunk(self):
+        """Returns days in month range."""
+        days_count = monthrange(self.current_date.year, self.current_date.month)[1]
+        return 1, days_count + 1
 
-class YearlyResultsDetails(ResultsDetails):
+    @property
+    def glucose_data(self):
+        return ReportData.glucose_measurement.filter(
+            patient_id=self.patient.id,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+
+
+class YearlyResultsDetails(SummaryResultsDetails):
     template_name = 'patients/results_yearly.html'
+
+    def get_start_end_chunk(self):
+        """Returns month in year range."""
+        return 1, 13
+
+    @property
+    def glucose_data(self):
+        return ReportData.glucose_measurement.filter(
+            patient_id=self.patient.id,
+            datetime__year=self.current_date.year,
+        )

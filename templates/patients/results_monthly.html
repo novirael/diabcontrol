@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-{% load staticfiles %}
 
 {% block content %}
     <div class="page-header">
@@ -23,10 +22,16 @@
 
     <h2>Diet</h2>
 
-    <h2>Glucose</h2>
+    {% include "patients/summary/glucose.html" with chart_id="monthlyGlucoseChart" %}
 
 {% endblock %}
 
 
 {% block scripts %}
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/glucose/monthly/{{ date.year }}/{{ date.month }}/', function(data) {
+            var ctx = $("#monthlyGlucoseChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
 {% endblock %}
