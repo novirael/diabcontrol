@@ -20,7 +20,7 @@
                 <td>{{ report.mood_level }}</td>
                 <td>{{ report.has_headaches }}</td>
                 <td>{{ report.other_diseases }}</td>
-                <td>No</td>
+              <td>{% if report.verified_by %}Yes{% else %}<a href="{% url 'reports:verify' report.id %}">No</a>{% endif %}</td>
             </tr>
             {% endfor %}
             </tbody>

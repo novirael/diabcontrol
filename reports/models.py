@@ -15,6 +15,7 @@ class Report(models.Model):
     mood_level = models.IntegerField(default=5)
     has_headaches = models.BooleanField(default=False)
     other_diseases = models.TextField(null=True, default=None)
+    verified_by = models.ForeignKey(User, default=None, null=True, blank=True, related_name='verified_by')
 
     def __str__(self):
         return "{} - {}".format(self.date, self.patient)

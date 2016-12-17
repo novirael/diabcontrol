@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^patients/', include('patients.urls', namespace='patients')),
     url(r'^invitations/', include('invitations.urls', namespace='invitations')),
     url(r'^msg/', include('msg.urls', namespace='msg')),
+    url(r'^reports/', include('reports.urls', namespace='reports')),
 
     url(r'^api/', include('rest_api.urls', namespace='rest_api')),
 
