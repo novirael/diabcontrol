@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="page-header">Report details</h1>
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Report</h3>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" style="margin: inherit;">
+        <dt>Full name</dt>
+        <dd><a href="{% url 'patients:details' report.patient_id %}">{{ report.patient.get_full_name }}</a></dd>
+        <dt>Date</dt>
+        <dd>{{ report.date }}</dd>
+        <dt>Mood level</dt>
+        <dd>{{ report.mood_level }}</dd>
+        <dt>Has headaches?</dt>
+        <dd>{{ report.has_headaches }}</dd>
+        <dt>Other diseases</dt>
+        <dd>{{ report.other_diseases }}</dd>
+        <dt>Is verified?</dt>
+        <dd>{% if report.verified_by %}Yes{% else %}
+          <a href="{% url 'reports:verify' report.id %}">No - verify</a>{% endif %}</dd>
+      </dl>
+    </div>
+  </div>
+{% endblock %}

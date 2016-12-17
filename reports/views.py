@@ -9,6 +9,17 @@ from accounts.models import UserProfile
 from reports.models import Report
 
 
+class ReportDetailsView(generic.TemplateView):
+    template_name = 'reports/details.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(ReportDetailsView, self).get_context_data(**kwargs)
+
+        kwargs['report'] = Report.objects.get(pk=self.kwargs['report_id'])
+
+        return kwargs
+
+
 class ReportSignView(generic.FormView):
     form_class = AuthenticateForm
     template_name = 'reports/verify.html'

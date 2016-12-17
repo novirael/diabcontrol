@@ -16,11 +16,11 @@
             <tbody>
             {% for report in reports %}
             <tr>
-                <td><a href="#">{{ report.date }}</a></td>
+                <td><a href="{% url 'reports:details' report.pk %}">{{ report.date }}</a></td>
                 <td>{{ report.mood_level }}</td>
                 <td>{{ report.has_headaches }}</td>
                 <td>{{ report.other_diseases }}</td>
-              <td>{% if report.verified_by %}Yes{% else %}<a href="{% url 'reports:verify' report.id %}">No</a>{% endif %}</td>
+                <td>{% if report.verified_by %}Yes{% else %}<a href="{% url 'reports:verify' report.id %}">No</a>{% endif %}</td>
             </tr>
             {% endfor %}
             </tbody>
