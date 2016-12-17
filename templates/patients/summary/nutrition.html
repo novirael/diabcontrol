@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal" style="margin: inherit;">
+            <h4>Average</h4>
+            <dt>Carbohydrates</dt>
+            <dd> {{ carbohydrates_val_per_month.avg }}g </dd>
+            <dt>Fat</dt>
+            <dd> {{ fat_val_per_month.avg }}g</dd>
+            <dt>Protein</dt>
+            <dd> {{ protein_val_per_month.avg }}g</dd>
+            <h4>Totality result</h4>
+            <dt>Carbohydrates</dt>
+            <dd>{{ carbohydrates_val_per_month.all }}g</dd>
+            <dt>Fat</dt>
+            <dd>{{ fat_val_per_month.all }}g</dd>
+            <dt>Protein</dt>
+            <dd>{{ protein_val_per_month.all }}g</dd>
+        </dl>
+    </div>
+</div>
+{#<div class="row">#}
+{#    <div class="col-md-6">#}
+{#          <canvas width="800" height="300" id="{{ chart_id }}"></canvas>#}
+{#    </div>#}
+{#</div>#}

@@ -1,0 +1,23 @@
+<h3>Heart rate</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal" style="margin: inherit;">
+            <dt>Average</dt>
+            <dd> {{ hr_val_per_month.avg }} BPM</dd>
+            <dt>Minimum average</dt>
+            <dd> {{ hr_val_per_month.min }} BPM</dd>
+            <dt>Maximum average</dt>
+            <dd> {{ hr_val_per_month.max }} BPM</dd>
+            <dt>Lowest result</dt>
+            <dd>{{ hr_val_per_day.min }} BPM</dd>
+            <dt>Highest result</dt>
+            <dd>{{ hr_val_per_day.max }} BPM</dd>
+        </dl>
+    </div>
+</div>
+{#<div class="row">#}
+{#    <div class="col-md-6">#}
+{#          <canvas width="800" height="300" id="{{ chart_id }}"></canvas>#}
+{#    </div>#}
+{#</div>#}

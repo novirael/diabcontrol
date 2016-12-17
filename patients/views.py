@@ -248,6 +248,17 @@ class SummaryResultsDetails(ResultsDetails):
     def get_start_end_chunk(self):
         raise NotImplementedError()
 
+    def get_chunks(self, list_data):
+        chunks = [
+            [
+                data.value
+                for data in list_data
+                if data.datetime.day == day
+                ]
+            for day in range(*self.get_start_end_chunk())
+            ]
+        return [chunk for chunk in chunks if chunk]
+
     @property
     def glucose_data(self):
         raise NotImplementedError()
@@ -282,6 +293,166 @@ class SummaryResultsDetails(ResultsDetails):
 
         return context
 
+    @property
+    def heartrate_data(self):
+        raise NotImplementedError()
+
+    def context_hr_data(self):
+        chunks = self.get_chunks(self.heartrate_data)
+        context = {}
+
+        if not any(chunks):
+            return context
+
+        values = [data.value for data in self.heartrate_data]
+        context['hr_val_per_day'] = dict(
+            min=min(values),
+            max=max(values),
+        )
+
+        values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        context['hr_val_per_month'] = dict(
+            min=min(values_avg),
+            max=max(values_avg),
+            avg=sum(values_avg) / (len(values_avg) or 1),
+        )
+        return context
+
+    @property
+    def climbed_data(self):
+        raise NotImplementedError()
+
+    def context_climbed_data(self):
+        chunks = self.get_chunks(self.climbed_data)
+
+        context = {}
+        if not any(chunks):
+            return context
+
+        values = [data.value for data in self.climbed_data]
+        context['climbed_val_per_day'] = dict(
+            min=min(values),
+            max=max(values),
+        )
+
+        values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        context['climbed_val_per_month'] = dict(
+            min=min(values_avg),
+            max=max(values_avg),
+            avg=sum(values_avg) / (len(values_avg) or 1),
+        )
+        return context
+
+    @property
+    def steps_data(self):
+        raise NotImplementedError()
+
+    def context_steps_data(self):
+        chunks = self.get_chunks(self.steps_data)
+
+        context = {}
+        if not any(chunks):
+            return context
+
+        values = [data.value for data in self.steps_data]
+        context['steps_val_per_day'] = dict(
+            min=min(values),
+            max=max(values),
+        )
+
+        values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        values_all = [sum(chunk) for chunk in chunks]
+
+        context['steps_val_per_month'] = dict(
+            min=min(values_avg),
+            max=max(values_avg),
+            avg=sum(values_avg) / (len(values_avg) or 1),
+            all=sum(values_all),
+        )
+        return context
+
+    def get_activity_context(self):
+        context = {}
+        context.update(self.context_hr_data())
+        context.update(self.context_climbed_data())
+        context.update(self.context_steps_data())
+        return context
+
+    @property
+    def fat_data(self):
+        raise NotImplementedError()
+
+    def context_fat(self):
+        chunks = self.get_chunks(self.fat_data)
+
+        context = {}
+        if not any(chunks):
+            return context
+
+        values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        values_all = [sum(chunk) for chunk in chunks]
+
+        context['fat_val_per_month'] = dict(
+            min=min(values_avg),
+            max=max(values_avg),
+            avg=sum(values_avg) / (len(values_avg) or 1),
+            all=sum(values_all),
+        )
+        return context
+
+    @property
+    def protein_data(self):
+        raise NotImplementedError()
+
+    def context_protein(self):
+        chunks = self.get_chunks(self.protein_data)
+
+        context = {}
+        if not any(chunks):
+            return context
+
+        values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        values_all = [sum(chunk) for chunk in chunks]
+
+        context['protein_val_per_month'] = dict(
+            min=min(values_avg),
+            max=max(values_avg),
+            avg=sum(values_avg) / (len(values_avg) or 1),
+            all=sum(values_all),
+        )
+
+        return context
+
+    @property
+    def carbohydrates_data(self):
+        raise NotImplementedError()
+
+    def context_carbohydrates(self):
+        chunks = self.get_chunks(self.carbohydrates_data)
+
+        context = {}
+        if not any(chunks):
+            return context
+
+        values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        values_all = [sum(chunk) for chunk in chunks]
+
+        context['carbohydrates_val_per_month'] = dict(
+            min=min(values_avg),
+            max=max(values_avg),
+            avg=sum(values_avg) / (len(values_avg) or 1),
+            all=sum(values_all),
+        )
+
+        return context
+
+    def get_nutrition_context(self):
+        context = {}
+        context.update(self.context_fat())
+        context.update(self.context_protein())
+        context.update(self.context_carbohydrates())
+        return context
+
 
 class MonthlyResultsDetails(SummaryResultsDetails):
     template_name = 'patients/results_monthly.html'
@@ -294,6 +465,60 @@ class MonthlyResultsDetails(SummaryResultsDetails):
     @property
     def glucose_data(self):
         return ReportData.glucose_measurement.filter(
+            patient_id=self.patient.id,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def heartrate_data(self):
+        return ReportData.objects.filter(
+            type='heart_rate',
+            patient_id=self.patient.id,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def climbed_data(self):
+        return ReportData.objects.filter(
+            type='flights_climbed',
+            patient_id=self.patient.id,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def steps_data(self):
+        return ReportData.objects.filter(
+            type='steps',
+            patient_id=self.patient.id,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def fat_data(self):
+        return ReportData.objects.filter(
+            type='fat',
+            patient_id=self.patient.id,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def protein_data(self):
+        return ReportData.objects.filter(
+            type='protein',
+            patient_id=self.patient.id,
+            datetime__month=self.current_date.month,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def carbohydrates_data(self):
+        return ReportData.objects.filter(
+            type='carbohydrates',
             patient_id=self.patient.id,
             datetime__month=self.current_date.month,
             datetime__year=self.current_date.year,

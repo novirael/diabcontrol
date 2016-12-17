@@ -17,10 +17,13 @@
                 <span aria-hidden="true">&rarr;</span></a></li>
       </ul>
     </nav>
-
     <h2>Physical effort</h2>
+    {% include "patients/summary/heartRate.html" %}
+    {% include "patients/summary/climbed.html" %}
+    {% include "patients/summary/steps.html" %}
 
-    <h2>Diet</h2>
+    <h2>Diet nutrition</h2>
+    {% include "patients/summary/nutrition.html" %}
 
     {% include "patients/summary/glucose.html" with chart_id="monthlyGlucoseChart" %}
 
@@ -31,6 +34,12 @@
     <script type="text/javascript">
         $.get('/api/patients/{{ patient.pk }}/charts/glucose/monthly/{{ date.year }}/{{ date.month }}/', function(data) {
             var ctx = $("#monthlyGlucoseChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/hr/monthly/{{ date.year }}/{{ date.month }}/', function(data) {
+            var ctx = $("#monthlyHRChart").get(0).getContext("2d");
             new Chart(ctx).Line(data);
         });
     </script>

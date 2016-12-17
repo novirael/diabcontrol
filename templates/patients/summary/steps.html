@@ -1,0 +1,25 @@
+<h3>Steps</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal" style="margin: inherit;">
+            <dt>Average</dt>
+            <dd> {{ steps_val_per_month.avg }} Steps</dd>
+            <dt>Minimum average</dt>
+            <dd> {{ steps_val_per_month.min }} Steps</dd>
+            <dt>Maximum average</dt>
+            <dd> {{ steps_val_per_month.max }} Steps</dd>
+            <dt>Lowest result</dt>
+            <dd>{{ steps_val_per_day.min }} Steps</dd>
+            <dt>Highest result</dt>
+            <dd>{{ steps_val_per_day.max }} Steps</dd>
+            <dt>All result</dt>
+            <dd>{{ steps_val_per_month.all }} Steps</dd>
+        </dl>
+    </div>
+</div>
+{#<div class="row">#}
+{#    <div class="col-md-6">#}
+{#          <canvas width="800" height="300" id="{{ chart_id }}"></canvas>#}
+{#    </div>#}
+{#</div>#}

@@ -1,0 +1,23 @@
+<h3>Flights climbed </h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal" style="margin: inherit;">
+            <dt>Average</dt>
+            <dd> {{ climbed_val_per_month.avg }} Floors</dd>
+            <dt>Minimum average</dt>
+            <dd> {{ climbed_val_per_month.min }} Floors</dd>
+            <dt>Maximum average</dt>
+            <dd> {{ climbed_val_per_month.max }} Floors</dd>
+            <dt>Lowest result</dt>
+            <dd>{{ climbed_val_per_day.min }} Floors</dd>
+            <dt>Highest result</dt>
+            <dd>{{ climbed_val_per_day.max }} Floors</dd>
+        </dl>
+    </div>
+</div>
+{#<div class="row">#}
+{#    <div class="col-md-6">#}
+{#          <canvas width="800" height="300" id="{{ chart_id }}"></canvas>#}
+{#    </div>#}
+{#</div>#}
