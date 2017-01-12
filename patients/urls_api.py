@@ -9,9 +9,9 @@ from patients.views_api import RelationshipListView
 
 urlpatterns = [
     url('^relations$', RelationshipListView.as_view(), name='relations'),
-    url('^(?P<pk>\d+)/charts/glucose/daily/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d+)/$',
+    url('^(?P<pk>\d+)/charts/glucose/daily/(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/$',
         DailyGlucoseLevelJSONView.as_view(), name='daily_glucose_chart'),
-    url('^(?P<pk>\d+)/charts/glucose/monthly/(?P<year>\d{4})/(?P<month>\d{2})/$',
+    url('^(?P<pk>\d+)/charts/glucose/monthly/(?P<year>\d{4})/(?P<month>\d{1,2})/$',
         MonthlyGlucoseLevelJSONView.as_view(), name='monthly_glucose_chart'),
     url('^(?P<pk>\d+)/charts/glucose/yearly/(?P<year>\d{4})/$',
         YearlyGlucoseLevelJSONView.as_view(), name='yearly_glucose_chart'),
