@@ -19,8 +19,12 @@
     </nav>
 
     <h2>Physical effort</h2>
+        {% include "patients/summary/heartRate.html" with chart_id="yearlyHrChart" %}
+        {% include "patients/summary/climbed.html" with chart_id="yearlyClimbedChart"%}
+        {% include "patients/summary/steps.html" with chart_id="yearlyStepsChart"%}
 
-    <h2>Diet</h2>
+    <h2>Diet nutrition</h2>
+    {% include "patients/summary/nutrition.html" with chart_id="container"%}
 
     {% include "patients/summary/glucose.html" with chart_id="yearlyGlucoseChart" %}
 
@@ -34,4 +38,73 @@
             new Chart(ctx).Line(data);
         });
     </script>
+
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/hr/yearly/{{ date.year }}/{{ date.month }}/', function(data) {
+            var ctx = $("#yearlyHrChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/climbed/yearly/{{ date.year }}/{{ date.month }}/', function(data) {
+            var ctx = $("#yearlyClimbedChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/steps/yearly/{{ date.year }}/{{ date.month }}/', function(data) {
+            var ctx = $("#yearlyStepsChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
+
+    <script type="text/javascript">
+        window.macros = $.get('/api/patients/{{ patient.pk }}/charts/macros/yearly/{{ date.year }}/{{ date.month }}/{{ date.day }}/');
+    </script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            window.macros.then(function (data) {
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Macro',
+                        colorByPoint: true,
+                        data: data.macros
+                    }]
+                });
+
+            })
+        });
+    </script>
+
 {% endblock %}

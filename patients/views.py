@@ -336,10 +336,12 @@ class SummaryResultsDetails(ResultsDetails):
         )
 
         values_avg = [sum(chunk) / (len(chunk) or 1) for chunk in chunks]
+        values_all = [sum(chunk) for chunk in chunks]
         context['climbed_val_per_month'] = dict(
             min=min(values_avg),
             max=max(values_avg),
             avg=sum(values_avg) / (len(values_avg) or 1),
+            all=sum(values_all),
         )
         return context
 
@@ -462,6 +464,17 @@ class MonthlyResultsDetails(SummaryResultsDetails):
         days_count = monthrange(self.current_date.year, self.current_date.month)[1]
         return 1, days_count + 1
 
+    def get_chunks(self, list_data):
+        chunks = [
+            [
+                data.value
+                for data in list_data
+                if data.datetime.day == day
+                ]
+            for day in range(*self.get_start_end_chunk())
+            ]
+        return [chunk for chunk in chunks if chunk]
+
     @property
     def glucose_data(self):
         return ReportData.glucose_measurement.filter(
@@ -532,9 +545,68 @@ class YearlyResultsDetails(SummaryResultsDetails):
         """Returns month in year range."""
         return 1, 13
 
+    def get_chunks(self, list_data):
+        chunks = [
+            [
+                data.value
+                for data in list_data
+                if data.datetime.month == month
+                ]
+            for month in range(*self.get_start_end_chunk())
+            ]
+        return [chunk for chunk in chunks if chunk]
+
     @property
     def glucose_data(self):
         return ReportData.glucose_measurement.filter(
+            patient_id=self.patient.id,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def heartrate_data(self):
+        return ReportData.objects.filter(
+            type='heart_rate',
+            patient_id=self.patient.id,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def climbed_data(self):
+        return ReportData.objects.filter(
+            type='flights_climbed',
+            patient_id=self.patient.id,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def steps_data(self):
+        return ReportData.objects.filter(
+            type='steps',
+            patient_id=self.patient.id,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def fat_data(self):
+        return ReportData.objects.filter(
+            type='fat',
+            patient_id=self.patient.id,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def protein_data(self):
+        return ReportData.objects.filter(
+            type='protein',
+            patient_id=self.patient.id,
+            datetime__year=self.current_date.year,
+        )
+
+    @property
+    def carbohydrates_data(self):
+        return ReportData.objects.filter(
+            type='carbohydrates',
             patient_id=self.patient.id,
             datetime__year=self.current_date.year,
         )

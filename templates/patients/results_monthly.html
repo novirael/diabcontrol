@@ -18,12 +18,12 @@
       </ul>
     </nav>
     <h2>Physical effort</h2>
-    {% include "patients/summary/heartRate.html" %}
-    {% include "patients/summary/climbed.html" %}
-    {% include "patients/summary/steps.html" %}
+    {% include "patients/summary/heartRate.html" with chart_id="monthlyHrChart" %}
+    {% include "patients/summary/climbed.html" with chart_id="monthlyClimbedChart"%}
+    {% include "patients/summary/steps.html" with chart_id="monthlyStepsChart"%}
 
     <h2>Diet nutrition</h2>
-    {% include "patients/summary/nutrition.html" %}
+    {% include "patients/summary/nutrition.html" with chart_id="container"%}
 
     {% include "patients/summary/glucose.html" with chart_id="monthlyGlucoseChart" %}
 
@@ -37,10 +37,73 @@
             new Chart(ctx).Line(data);
         });
     </script>
+
     <script type="text/javascript">
         $.get('/api/patients/{{ patient.pk }}/charts/hr/monthly/{{ date.year }}/{{ date.month }}/', function(data) {
-            var ctx = $("#monthlyHRChart").get(0).getContext("2d");
+            var ctx = $("#monthlyHrChart").get(0).getContext("2d");
             new Chart(ctx).Line(data);
         });
     </script>
+
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/climbed/monthly/{{ date.year }}/{{ date.month }}/', function(data) {
+            var ctx = $("#monthlyClimbedChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $.get('/api/patients/{{ patient.pk }}/charts/steps/monthly/{{ date.year }}/{{ date.month }}/', function(data) {
+            var ctx = $("#monthlyStepsChart").get(0).getContext("2d");
+            new Chart(ctx).Line(data);
+        });
+    </script>
+
+    <script type="text/javascript">
+        window.macros = $.get('/api/patients/{{ patient.pk }}/charts/macros/monthly/{{ date.year }}/{{ date.month }}/{{ date.day }}/');
+    </script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            window.macros.then(function (data) {
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Macro',
+                        colorByPoint: true,
+                        data: data.macros
+                    }]
+                });
+
+            })
+        });
+    </script>
+
 {% endblock %}

@@ -11,13 +11,13 @@
             <dd> {{ climbed_val_per_month.max }} Floors</dd>
             <dt>Lowest result</dt>
             <dd>{{ climbed_val_per_day.min }} Floors</dd>
-            <dt>Highest result</dt>
-            <dd>{{ climbed_val_per_day.max }} Floors</dd>
+            <dt>Totality value</dt>
+            <dd>{{ climbed_val_per_month.all }} Floors</dd>
         </dl>
     </div>
 </div>
-{#<div class="row">#}
-{#    <div class="col-md-6">#}
-{#          <canvas width="800" height="300" id="{{ chart_id }}"></canvas>#}
-{#    </div>#}
-{#</div>#}
+<div class="row">
+    <div class="col-md-6">
+          <canvas width="800" height="300" id="{{ chart_id }}"></canvas>
+    </div>
+</div>
