@@ -1,4 +1,4 @@
-# Install
+# Install Web
 
 1. Zainstalować Python 2.7
 2. Zainstalować git
@@ -7,3 +7,10 @@
 5. Aktywuj wurtualne środowisko pythona `activate venv/bin/active`
 6. Zainstalować wymagane zależności `pip install -r requirements.txt`
 7. Uruchomić aplikację `diabcontrol/manage.py runserver 8000`
+
+# Install mobile
+
+1. Zainstalować program Xcode z Mac AppStore.
+2. Ściągnąć projekt `https://github.com/michaello/DiabControl`
+3. Zarejestrować darmowe konto developerskie
+4. Na urządzeniu Apple iPhone lub wbudowanym symulatorze zbudować aplikację.
