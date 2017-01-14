@@ -11,7 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 class Report(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     patient = models.ForeignKey(User)
-    date = models.DateField(auto_now=True)
+    date = models.DateField()
     mood_level = models.IntegerField(default=5)
     has_headaches = models.BooleanField(default=False)
     other_diseases = models.TextField(null=True, default=None)

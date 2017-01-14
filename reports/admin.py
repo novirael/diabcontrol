@@ -3,8 +3,13 @@ from django.contrib import admin
 from reports.models import Report, ReportData
 
 
+class ReportDataInline(admin.TabularInline):
+    model = ReportData
+
+
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('date', 'patient', 'mood_level', 'has_headaches', 'other_diseases')
+    inlines = (ReportDataInline,)
 
 
 class ReportDataAdmin(admin.ModelAdmin):
