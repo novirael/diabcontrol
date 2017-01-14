@@ -128,7 +128,6 @@
         {% if request.user.is_authenticated %}
           <ul class="nav nav-sidebar">
           {% if is_doctor %}
-              <li {% if '/dashboard' in request.path %}class="active"{% endif %}><a href="/dashboard/">Dashboard</a></li>
               <li {% if '/patients' in request.path %}class="active"{% endif %}><a href="/patients/index">My patients</a></li>
               <li {% if '/invitations/index' in request.path %}class="active"{% endif %}><a href="/invitations/index">My invitations</a></li>
           {% else %}
