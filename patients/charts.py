@@ -111,17 +111,13 @@ class DailyHrLevelJSONView(PatientDateMixin, BaseLineChartView):
         )
 
     def get_labels(self):
-        l = [
+        return [
             data.datetime.strftime("%H:%M")
             for data in self.hr_data
         ]
-        print l
-        return l
 
     def get_data(self):
-        l = [[data.value for data in self.hr_data]]
-        print l
-        return l
+        return [[data.value for data in self.hr_data]]
 
 
 class DailyStepsLevelJSONView(PatientDateMixin, BaseLineChartView):
