@@ -34,9 +34,9 @@ class RegisterForm(forms.ModelForm):
 
     chronic_deseassed = forms.ChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices=CHRONIC_DISEASES_CHOICES
+        choices=CHRONIC_DISEASES_CHOICES,
+        required=False
     )
-
 
     class Meta:
         model = User

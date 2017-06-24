@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>You account has been created.</h1>
+    <p>Please follow the instructions send to your email to verify the account before logging in for the first time.</p>
+    <p>Move back to <a href={% url 'accounts:login' %}>login page</a>.</p>
+{% endblock %}

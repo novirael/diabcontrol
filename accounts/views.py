@@ -3,6 +3,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
 from django.views import generic
@@ -53,7 +54,7 @@ class LoginView(FormView):
 class RegisterView(generic.FormView):
     form_class = RegisterForm
     template_name = 'accounts/register.html'
-    success_url = '/'
+    success_url = reverse_lazy('accounts:register_success')
 
     def form_valid(self, form):
         user = User(
@@ -64,15 +65,9 @@ class RegisterView(generic.FormView):
         )
 
         user.set_password(form.cleaned_data['password'])
-
         user.save()
 
-        debug = 1
-        debug += 2
-
-        response = super(RegisterView, self).form_valid(form)
-
-        return response
+        return super(RegisterView, self).form_valid(form)
 
 
 class AuthenticateUserView(generic.FormView):
