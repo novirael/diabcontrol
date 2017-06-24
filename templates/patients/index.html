@@ -8,19 +8,18 @@
                 <th>Email</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-              <th>Details</th>
             </tr>
         </thead>
         <tbody>
             {% for rel in object_list %}
                 <tr>
-                    <td>
+                    <td class="email">
                         <a href="{% url 'patients:details' pk=rel.patient.id %}">
                             {{ rel.patient.email }}
                         </a>
                     </td>
-                    <td>{{ rel.patient.first_name }}</td>
-                    <td>{{ rel.patient.last_name }}</td>
+                    <td class="fname">{{ rel.patient.first_name }}</td>
+                    <td class="lname">{{ rel.patient.last_name }}</td>
                 </tr>
             {% endfor %}
         </tbody>
