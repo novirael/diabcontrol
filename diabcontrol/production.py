@@ -4,7 +4,7 @@ from diabcontrol.settings import *
 
 
 ALLOWED_HOSTS = [
-    'diabcontrol.herokuapp.com',
+    '.herokuapp.com',
 ]
 
 DATABASES = {
